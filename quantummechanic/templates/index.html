@@ -5,22 +5,27 @@
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <title>QuantumMechanic</title>
+<script>
+$(function() {
+});
+</script>
 <style>
 body {
     width: 550px;
     color: #333333;
     background-color:#EEEEEE;
+    background-image: url('/media/brushed_alu.png');
+    background-repeat: repeat;
 }
 div.gate {
     display: inline-block;
 }
 div#gates {
-    min-width: 550px;
-    max-width: 550px;
+    width: 550px;
     overflow: scroll;
     display: inline-block;
     white-space: nowrap;
-    overflow-y:hidden;
+    verflow-y:hidden;
     padding: 20px;
 }
 div#gates div.gate:hover {
@@ -42,7 +47,14 @@ div#gates img {
     transform: translate(0, -50%);
 }
 div#canvas {
-   padding: 5px;
+    padding: 5px;
+    width: 550px;
+    border: 2px solid #DDDDDD;
+    border-radius: 10px;
+}
+input.param {
+    width: 50px;
+    margin-right: 10px;
 }
 </style>
 </head>
@@ -56,15 +68,22 @@ CONSTRUCTION TARGET(?)
 {{circuit_init_png|safe}}
 </div>
 <hr>
-<div id="gates">
-{% for gate_png in gate_pngs %}
-<div class="gate">
-{{gate_png|safe}}
-</div>
-{% endfor %}
-</div>
+Qubit 1: <input type="text" name="qubit1" class="param">
+Qubit 2: <input type="text" name="qubit2" class="param">
+Theta: <input type="text" name="theta" class="param">
+
 <hr>
-DELETE GATE BUTTON
+
+<div id="gates">
+    {% for gate_png in gate_pngs %}
+        <div class="gate draggable">
+        {{gate_png|safe}}
+        </div>
+    {% endfor %}
+</div>
+
+<hr>
+<input type="submit" value="Delete last gate">
 
 </body>
 </html>
