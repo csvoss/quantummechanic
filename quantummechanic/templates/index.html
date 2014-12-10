@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>QuantumMechanic</title>
+<style>
+body {
+    width: 1000px;
+    color: #333333;
+    background-color:#EEEEEE;
+}
+div.gate {
+    display: inline-block;
+}
+div#gates {
+    min-width: 1000px;
+    max-width: 1000px;
+    overflow: scroll;
+    display: inline-block;
+    white-space: nowrap;
+    overflow-y:hidden;
+    padding: 20px;
+}
+div#gates svg:hover, div#canvas svg:hover{
+    background-color: #FFFFFF;
+}
+div#gates svg {
+    min-height: 100px;
+    min-width: 150px;
+}
+div#canvas svg {
+   min-width: 1000px;
+}
+div#gates svg, div#canvas svg {
+    padding: 5px;
+    border: 2px solid #DDDDDD;
+    border-radius: 10px;
+}
+</style>
+</head>
+<body>
+<h1>QuantumMechanic</h1>
+
+CONSTRUCTION TARGET(?)
+<hr>
+<h2>Circuit-in-Progress</h2>
+<div id="canvas">
+{{circuit_init_svg|safe}}
+</div>
+<hr>
+<div id="gates">
+{% for gate_svg in gate_svgs %}
+<div class="gate">
+{{gate_svg|safe}}
+</div>
+{% endfor %}
+</div>
+<hr>
+DELETE GATE BUTTON
+
+</body>
+</html>
