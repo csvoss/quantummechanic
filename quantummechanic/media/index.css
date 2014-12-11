@@ -1,0 +1,45 @@
+body {
+    color: #333333;
+    background-color:#EEEEEE;
+    //background-image: url('/media/brushed_alu.png');
+    //background-repeat: repeat;
+}
+div.gate {
+    display: inline-block;
+}
+div#gates {
+    width: 100%;
+    overflow: scroll;
+    display: inline-block;
+    white-space: nowrap;
+    overflow-y:hidden;
+}
+div#gates div.gate:hover {
+    background-color: #FFFFFF;
+    border: 2px solid #DDDDDD;
+    border-radius: 10px;
+    cursor: pointer;
+}
+div#gates div.gate {
+    width: 100px;
+    height: 100px;
+    padding: 5px;
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 10px;
+}
+div#gates img {
+    width: 90%;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+div#canvas {
+    width: 100%;
+    overflow: scroll;
+    overflow-y: hidden;
+}
+input.param {
+    width: 50px;
+    margin-right: 10px;
+}
