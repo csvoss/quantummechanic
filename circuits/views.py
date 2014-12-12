@@ -11,10 +11,22 @@ import cPickle
 from qutip import *
 from IPython.display import Image
 
-# Create your views here.
-def main(request):
+MAX_QUBITS = 10
+MIN_QUBITS = 2
+DEFAULT_QUBITS = 4
 
-    n = 5
+def main_default(request):
+    return main(request, DEFAULT_QUBITS)
+
+def main(request, n):    
+    try:
+        n = int(n)
+    except:
+        n = DEFAULT_QUBITS
+    if n < MIN_QUBITS:
+        n = MIN_QUBITS
+    if n > MAX_QUBITS:
+        n = MAX_QUBITS
 
     gates = get_gate_pngs()
 

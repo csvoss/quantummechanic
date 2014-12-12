@@ -23,19 +23,12 @@ Read more about each of the supported gates: <a href="http://nbviewer.ipython.or
 <table>
 <tr>
 <td>
-Qubit 0
+<br>
+{% for number in qubit_numbers %}
+Qubit {{number}}
 <br>
 <br>
-Qubit 1
-<br>
-<br>
-Qubit 2
-<br>
-<br>
-Qubit 3
-<br>
-<br>
-Qubit 4
+{% endfor %}
 </td>
 <td id="canvas_td"><br>
 <div id="canvas" data-state='{{circuit_init_data|safe}}'>
