@@ -15,10 +15,13 @@ MAX_QUBITS = 10
 MIN_QUBITS = 2
 DEFAULT_QUBITS = 4
 
-def main_default(request):
-    return main(request, DEFAULT_QUBITS)
+def index(request):
+    return TemplateResponse(request, "index.html", {})
 
-def main(request, n):    
+def sandbox_default(request):
+    return sandbox(request, DEFAULT_QUBITS)
+
+def sandbox(request, n):    
     try:
         n = int(n)
     except:
@@ -41,7 +44,7 @@ def main(request, n):
         "qubit_numbers": range(n),
         "matrix": matrix_data(qc),
     }
-    return TemplateResponse(request, "index.html", data)
+    return TemplateResponse(request, "sandbox.html", data)
 
 ONE_QUBIT_GATES = ["SNOT", "SQRTNOT", "RX", "RY", "RZ", "PHASEGATE", "GLOBALPHASE"]
 TWO_QUBIT_GATES = ["SWAP", "BERKELEY", "ISWAP", "SQRTISWAP", "CNOT", "CSIGN", "SWAPalpha"]
@@ -75,11 +78,11 @@ def get_gate_pngs():
         elif gate in SINGLE_QUBIT_THETA_GATES:
             qc.add_gate(gate, 0, None, 0, "\\theta")
         elif gate in DOUBLE_QUBIT_THETA_GATES:
-            qc.add_gate(gate, [0, 1], None, 0, "\\theta")
+            qc.add_gate(gate, [1, 0], None, 0, "\\theta")
         elif gate in TWO_CONTROLS_ONE_GATE:
-            qc.add_gate(gate, [0, 1], 2)
+            qc.add_gate(gate, 2, [1, 0])
         elif gate in ONE_CONTROL_TWO_GATES:
-            qc.add_gate(gate, [0, 1], 2)
+            qc.add_gate(gate, [1, 2], 0)
         try:
             with open("images/" + gate + ".png", "r") as cached:
                 output.append((cached.read(), gate))
@@ -131,7 +134,7 @@ def undo(request):
             "error_message": str(e.message),
         }))
 
-def undo(request):
+def clear(request):
     try:
         if request.method == 'GET':
             state = json.loads(request.GET.get("state"))
@@ -270,7 +273,7 @@ def extract_gate(n, gate, qubit1, qubit2, qubit3, theta):
                 raise StandardError("Qubit 1 and 2 must be different")
         elif gate in ONE_CONTROL_ONE_GATE:
             if qubit1 != qubit2:
-                qc.add_gate(gate, qubit1, qubit2)
+                qc.add_gate(gate, qubit2, qubit1)
             else:
                 raise StandardError("Qubit 1 and 2 must be different")
         elif gate in SINGLE_QUBIT_THETA_GATES:
@@ -287,7 +290,10 @@ def extract_gate(n, gate, qubit1, qubit2, qubit3, theta):
                 raise StandardError("Qubits 1, 2, and 3 must be different")
         elif gate in ONE_CONTROL_TWO_GATES:
             if qubit1 != qubit2 and qubit2 != qubit3 and qubit1 != qubit3:
-                qc.add_gate(gate, [qubit1, qubit2], qubit3)
+                if abs(qubit1 - qubit3) > abs(qubit2 - qubit3):
+                    qc.add_gate(gate, [qubit2, qubit1], qubit3)
+                else:
+                    qc.add_gate(gate, [qubit1, qubit2], qubit3)                    
             else:
                 raise StandardError("Qubits 1, 2, and 3 must be different")
         elif gate in TWO_CONTROLS_ONE_GATE:

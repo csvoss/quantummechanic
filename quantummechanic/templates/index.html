@@ -9,69 +9,16 @@
 <link rel="stylesheet" type="text/css" href="/media/index.css">
 </head>
 <body>
-<h1>QuantumMechanic</h1>
+<h1>&#128295; QuantumMechanic</h1>
 
-<p>
+<h2>Sandbox Mode</h2>
+<ul>
+<li><a href="/sandbox/2">2 qubits</a></li>
+<li><a href="/sandbox/3">3 qubits</a></li>
+<li><a href="/sandbox/4">4 qubits</a></li>
+<li><a href="/sandbox/5">5 qubits</a></li>
+<li><a href="/sandbox/10">10 qubits</a></li>
 
-Read more about each of the supported gates: <a href="http://nbviewer.ipython.org/github/qutip/qutip-notebooks/blob/master/examples/example-quantum-gates.ipynb">QuTIP documentation</a>.
-</p>
-
-<!--CONSTRUCTION TARGET(?) <hr> <h2>Circuit-in-Progress</h2>-->
-
-<input type="submit" value="Delete final gate" id="undo">
-<input type="submit" value="Clear circuit" id="clear">
-<table>
-<tr>
-<td>
-<br>
-{% for number in qubit_numbers %}
-Qubit {{number}}
-<br>
-<br>
-{% endfor %}
-</td>
-<td id="canvas_td"><br>
-<div id="canvas" data-state='{{circuit_init_data|safe}}'>
-{{circuit_init_png|safe}}
-</div>
-</td>
-</tr>
-</table>
-<br>
-<i>To add a gate to the circuit, click on it below after configuring these settings.</i>
-<br>
-First qubit: <select name="qubit1" id="qubit1" class="param">
-  {% for number in qubit_numbers %}
-  <option value="{{number}}">{{number}}</option>
-  {% endfor %}
-</select>
-Second qubit: <select name="qubit2" id="qubit2" class="param">
-  {% for number in qubit_numbers %}
-  <option value="{{number}}">{{number}}</option>
-  {% endfor %}
-</select>
-Third qubit: <select name="qubit3" id="qubit3" class="param">
-  {% for number in qubit_numbers %}
-  <option value="{{number}}">{{number}}</option>
-  {% endfor %}
-</select>
-<span class="tab">
-Theta: <input type="text" name="theta" id="theta" class="param"> degrees
-<span class="tab">
-Insert after: gate #<input type="text" name="nth" id="nth" class="param">
-
-<div id="gates">
-    {% for gate in gates %}
-        <div class="gate draggable" data-name="{{gate.1}}">
-        {{gate.0|safe}}
-        </div>
-    {% endfor %}
-</div>
-
-<h2>Matrix representation:</h2>
-<div id="matrix">
-{{matrix|safe}}
-</div>
 
 </body>
 </html>

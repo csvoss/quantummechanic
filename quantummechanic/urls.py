@@ -8,11 +8,12 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'quantummechanic.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-
+                       
+    url(r'^$', circuits.views.index, name='index'),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^sandbox/(?P<n>\d{0,10})/$', circuits.views.main, name='main'),
-    url(r'^sandbox/', circuits.views.main_default, name='main_default'),
+    url(r'^sandbox/(?P<n>\d{0,10})', circuits.views.sandbox, name='sandbox'),
+    url(r'^sandbox/', circuits.views.sandbox_default, name='sandbox_default'),
     url(r'^addgate/', circuits.views.addgate, name='addgate'),
     url(r'^undo/', circuits.views.undo, name='undo'),
-    url(r'^clear/', circuits.views.undo, name='clear'),
+    url(r'^clear/', circuits.views.clear, name='clear'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

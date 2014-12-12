@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+<title>QuantumMechanic</title>
+<script src="/media/index.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/index.css">
+</head>
+<body>
+<h1>&#128295; QuantumMechanic</h1>
+
+<p>
+
+Read more about each of the supported gates: <a href="http://nbviewer.ipython.org/github/qutip/qutip-notebooks/blob/master/examples/example-quantum-gates.ipynb">QuTIP documentation</a>.
+</p>
+
+<!--CONSTRUCTION TARGET(?) <hr> <h2>Circuit-in-Progress</h2>-->
+
+<input type="submit" value="Delete final gate" id="undo">
+<input type="submit" value="Clear circuit" id="clear">
+<table>
+<tr>
+<td>
+<br>
+{% for number in qubit_numbers %}
+Qubit {{number}}
+<br>
+<br>
+{% endfor %}
+</td>
+<td id="canvas_td"><br>
+<div id="canvas" data-state='{{circuit_init_data|safe}}'>
+{{circuit_init_png|safe}}
+</div>
+</td>
+</tr>
+</table>
+<br>
+<i>To add a gate to the circuit, click on it below after configuring these settings.</i>
+<br>
+First qubit: <select name="qubit1" id="qubit1" class="param">
+  {% for number in qubit_numbers %}
+  <option value="{{number}}"{% if number == 0 %} selected{% endif %}>{{number}}</option>
+  {% endfor %}
+</select>
+Second qubit: <select name="qubit2" id="qubit2" class="param">
+  {% for number in qubit_numbers %}
+  <option value="{{number}}"{% if number == 1 %} selected{% endif %}>{{number}}</option>
+  {% endfor %}
+</select>
+Third qubit: <select name="qubit3" id="qubit3" class="param">
+  {% for number in qubit_numbers %}
+  <option value="{{number}}"{% if number == 2 %} selected{% endif %}>{{number}}</option>
+  {% endfor %}
+</select>
+<span class="tab">
+&theta;: <input type="text" name="theta" id="theta" class="param"> &deg;
+<span class="tab">
+Insert after: gate #<input type="text" name="nth" id="nth" class="param">
+
+<div id="gates">
+    {% for gate in gates %}
+        <div class="gate draggable" data-name="{{gate.1}}">
+        {{gate.0|safe}}
+        </div>
+    {% endfor %}
+</div>
+
+<h2>Matrix representation:</h2>
+<div id="matrix">
+{{matrix|safe}}
+</div>
+
+</body>
+</html>
