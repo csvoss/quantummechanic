@@ -6,14 +6,17 @@
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <title>QuantumMechanic</title>
 <script src="/media/index.js"></script>
+<script src="/media/puzzle.js"></script>
 <link rel="stylesheet" type="text/css" href="/media/index.css">
 </head>
 <body>
-<h1>&#128295; QuantumMechanic</h1>
+<h1>&#128295; QuantumMechanic &ndash; Puzzle</h1>
 
 <p>
 (<a href="/">back to main menu</a>) Read more about each gate: <a href="http://nbviewer.ipython.org/github/qutip/qutip-notebooks/blob/master/examples/example-quantum-gates.ipynb">QuTIP documentation</a>.
 </p>
+
+<p><b>CHALLENGE: Build a Fredkin gate from Toffoli gates.</b></p>
 
 <!--CONSTRUCTION TARGET(?) <hr> <h2>Circuit-in-Progress</h2>-->
 
@@ -33,6 +36,12 @@ Qubit {{number}}
 <div id="canvas" data-state='{{circuit_init_data|safe}}'>
 {{circuit_init_png|safe}}
 </div>
+</td>
+<td>
+<h1>=?=</h1>
+</td>
+<td>
+{{target_png|safe}}
 </td>
 </tr>
 </table>
@@ -55,21 +64,22 @@ Third qubit: <select name="qubit3" id="qubit3" class="param">
   {% endfor %}
 </select>
 <span class="tab">
-&theta;: <input type="text" name="theta" id="theta" class="param"> &deg;
-<span class="tab">
 Insert after: gate #<input type="text" name="nth" id="nth" class="param">
 
 <div id="gates">
-    {% for gate in gates %}
-        <div class="gate draggable" data-name="{{gate.1}}">
-        {{gate.0|safe}}
-        </div>
-    {% endfor %}
+  <div class="gate draggable" data-name="{{toffoli.1}}">
+    {{toffoli.0|safe}}
+  </div>
 </div>
 
-<h2>Matrix representation:</h2>
+<h2>Current matrix:</h2>
 <div id="matrix">
 {{matrix|safe}}
+</div>
+
+<h2>Desired matrix:</h2>
+<div id="matrix_target">
+{{matrix_target|safe}}
 </div>
 
 </body>

@@ -15,6 +15,28 @@ MAX_QUBITS = 10
 MIN_QUBITS = 2
 DEFAULT_QUBITS = 4
 
+def puzzle(request):
+    n = 3
+    circuit_init_data = init_state(n)
+    qc = restore_state(circuit_init_data)
+    circuit_init_png = image_data(qc)
+
+    fredkin_data = init_state(n)
+    fredkin_data = updated_state(fredkin_data, ("FREDKIN", 0, 1, 2, 0), 0)
+    fredkin_qc = restore_state(fredkin_data)
+    fredkin_png = image_data(fredkin_qc)
+
+    data = {
+        "toffoli": toffoli_png(),
+        "circuit_init_png": circuit_init_png,
+        "circuit_init_data": json.dumps(circuit_init_data).replace(" ", ""),
+        "qubit_numbers": range(n),
+        "matrix": matrix_data(qc),
+        "matrix_target": matrix_data(fredkin_qc),
+        "target_png": fredkin_png,
+    }
+    return TemplateResponse(request, "puzzle.html", data)
+
 def index(request):
     return TemplateResponse(request, "index.html", {})
 
@@ -93,6 +115,13 @@ def get_gate_pngs():
                 new_file.write(data)
 
     return output
+
+def toffoli_png():
+    gate = "TOFFOLI"
+    qc = QubitCircuit(3)
+    qc.add_gate(gate, 2, [1, 0])
+    data = image_data(qc)
+    return (data, gate)
 
 def image_data(q):
     assert type(q) is QubitCircuit
