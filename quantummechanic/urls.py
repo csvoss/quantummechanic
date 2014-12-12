@@ -13,5 +13,5 @@ urlpatterns = patterns('',
     url(r'^sandbox/', circuits.views.main, name='main'),
     url(r'^addgate/', circuits.views.addgate, name='addgate'),
     url(r'^undo/', circuits.views.undo, name='undo'),
-    url(r'^getmatrix/', circuits.views.getmatrix, name='getmatrix'),
+    url(r'^clear/', circuits.views.undo, name='clear'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

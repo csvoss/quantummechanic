@@ -18,12 +18,33 @@ Read more about each of the supported gates: <a href="http://nbviewer.ipython.or
 
 <!--CONSTRUCTION TARGET(?) <hr> <h2>Circuit-in-Progress</h2>-->
 
-<p><input type="submit" value="Delete final gate" id="undo"></p>
+<input type="submit" value="Delete final gate" id="undo">
+<input type="submit" value="Clear circuit" id="clear">
+<table>
+<tr>
+<td>
+Qubit 0
+<br>
+<br>
+Qubit 1
+<br>
+<br>
+Qubit 2
+<br>
+<br>
+Qubit 3
+<br>
+<br>
+Qubit 4
+</td>
+<td id="canvas_td"><br>
 <div id="canvas" data-state='{{circuit_init_data|safe}}'>
 {{circuit_init_png|safe}}
 </div>
-
-<hr>
+</td>
+</tr>
+</table>
+<br>
 <i>To add a gate to the circuit, click on it below after configuring these settings.</i>
 <br>
 First qubit: <select name="qubit1" id="qubit1" class="param">

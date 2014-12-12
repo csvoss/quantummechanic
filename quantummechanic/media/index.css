@@ -13,6 +13,7 @@ div#gates {
     display: inline-block;
     white-space: nowrap;
     overflow-y:hidden;
+    margin-top: 15px;
 }
 div#gates div.gate:hover {
     background-color: #FFFFFF;
@@ -35,18 +36,24 @@ div#gates img {
     transform: translate(0, -50%);
 }
 div#canvas {
-    width: 100%;
-    overflow: scroll;
-    overflow-y: hidden;
     padding: 10px;
     padding-right: 0px;
     padding-left: 0px;
+    overflow: scroll;
+    overflow-y: hidden;
+    max-width: 1200px;
+}
+td#canvas_td {
+}
+td#qubit_td {
+    width: 100px;
+    padding: 100px;
 }
 input.param {
     width: 50px;
     margin-right: 10px;
 }
-td {
+div#matrix td {
     padding: 5px;
     padding-left: 15px;
     text-align: center;

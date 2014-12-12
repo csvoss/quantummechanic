@@ -14,7 +14,7 @@ from IPython.display import Image
 # Create your views here.
 def main(request):
 
-    n = 3
+    n = 5
 
     gates = get_gate_pngs()
 
@@ -119,6 +119,30 @@ def undo(request):
             "error_message": str(e.message),
         }))
 
+def undo(request):
+    try:
+        if request.method == 'GET':
+            state = json.loads(request.GET.get("state"))
+            new_state = {
+                "nQubits": state["nQubits"],
+                "gateTuples": [],
+            }
+            qc = restore_state(new_state)
+            return HttpResponse(json.dumps({
+                "new_state": json.dumps(new_state),
+                "new_image": image_data(qc),
+                "new_matrix": matrix_data(qc),
+            }))
+        else:
+            return HttpResponse("")
+    except StandardError as e:
+        print traceback.format_exc()
+        print sys.exc_info()
+        return HttpResponse(json.dumps({
+            "error": True,
+            "error_message": str(e.message),
+        }))
+
 def addgate(request):
     try:
         if request.method == 'GET':
@@ -141,26 +165,6 @@ def addgate(request):
         return HttpResponse(json.dumps({
             "error": True,
             "error_message": str(e.message),
-        }))
-
-def getmatrix(request):
-    try:
-        if request.method == 'GET':
-            state = json.loads(request.GET.get("state"))
-            qc = restore_state(state)
-            matrix = matrix_data(qc)
-            return HttpResponse(json.dumps({
-                "matrix": json.dumps(matrix),
-                "error": False,
-            }))
-        else:
-            raise StandardError("Method should be GET")
-    except:
-        print traceback.format_exc()
-        print sys.exc_info()
-        return HttpResponse(json.dumps({
-            "error": True,
-            "error_message": sys.exc_info(),
         }))
 
 def matrix_data(qc):
@@ -238,11 +242,11 @@ def string_theta(theta):
         raise StandardError("Invalid theta -- must be a number (in degrees)")
     return theta
 
-def extract_gate(gate, qubit1, qubit2, qubit3, theta):
+def extract_gate(n, gate, qubit1, qubit2, qubit3, theta):
     ## Create a function which applies the specified gate to a QC
-    qubit1 = int(qubit1)
-    qubit2 = int(qubit2)
-    qubit3 = int(qubit3)
+    qubit1 = n - int(qubit1) - 1
+    qubit2 = n - int(qubit2) - 1
+    qubit3 = n - int(qubit3) - 1
 
     def retval(qc):
         if gate in SINGLE_QUBIT_GATES:
@@ -287,9 +291,10 @@ def restore_state(state):
     ## Return a QubitCircuit
     ## by applying the given state
     ## state :: State data abstraction
-    qc = QubitCircuit(state["nQubits"])
+    n = state["nQubits"]
+    qc = QubitCircuit(n)
     for gateTuple in state["gateTuples"]:
-        extract_gate(*gateTuple)(qc)
+        extract_gate(n, *gateTuple)(qc)
     return qc
 
 def updated_state(old_state, new_gate_tuple, nth):

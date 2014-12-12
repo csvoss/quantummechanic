@@ -69,4 +69,29 @@ $(function() {
 	    });
 	}
     });
+    $("#clear").click(function() {
+	if (!locked) {
+	    lock();
+	    var state = $("#canvas").attr("data-state");
+	    $.ajax("/clear/", {
+		data: {
+		    "state": state,
+		},
+		success: function(data, status, jqxhr) {
+		    if (data["error"]) {
+			alert(data["error_message"]);
+		    }
+		    $("#canvas").attr("data-state", data["new_state"]);
+		    $("#canvas").html(data["new_image"]);
+		    $("#matrix").html(data["new_matrix"]);
+		    unlock();
+		},
+		error: function(jqxhr, status, errorthrown) {
+		    alert(status);
+		    unlock();
+		},
+		dataType: "json",
+	    });
+	}
+    });
 });
