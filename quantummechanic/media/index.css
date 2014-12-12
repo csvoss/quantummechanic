@@ -38,8 +38,20 @@ div#canvas {
     width: 100%;
     overflow: scroll;
     overflow-y: hidden;
+    padding: 10px;
+    padding-right: 0px;
+    padding-left: 0px;
 }
 input.param {
     width: 50px;
     margin-right: 10px;
+}
+td {
+    padding: 5px;
+    padding-left: 15px;
+    text-align: center;
+}
+
+span.tab {
+    margin-left: 25px;
 }

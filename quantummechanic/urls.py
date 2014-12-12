@@ -10,5 +10,8 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^circuits/', circuits.views.main, name='main')
+    url(r'^sandbox/', circuits.views.main, name='main'),
+    url(r'^addgate/', circuits.views.addgate, name='addgate'),
+    url(r'^undo/', circuits.views.undo, name='undo'),
+    url(r'^getmatrix/', circuits.views.getmatrix, name='getmatrix'),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

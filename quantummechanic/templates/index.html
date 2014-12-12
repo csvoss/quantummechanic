@@ -5,85 +5,59 @@
 <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 <title>QuantumMechanic</title>
-<script>
-$(function() {
-});
-</script>
-<style>
-body {
-    width: 550px;
-    color: #333333;
-    background-color:#EEEEEE;
-    background-image: url('/media/brushed_alu.png');
-    background-repeat: repeat;
-}
-div.gate {
-    display: inline-block;
-}
-div#gates {
-    width: 550px;
-    overflow: scroll;
-    display: inline-block;
-    white-space: nowrap;
-    verflow-y:hidden;
-    padding: 20px;
-}
-div#gates div.gate:hover {
-    background-color: #FFFFFF;
-}
-div#gates div.gate {
-    width: 100px;
-    height: 100px;
-    border: 2px solid #DDDDDD;
-    border-radius: 10px;
-    padding: 5px;
-    position: relative;
-
-}
-div#gates img {
-    width: 90%;
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
-}
-div#canvas {
-    padding: 5px;
-    width: 550px;
-    border: 2px solid #DDDDDD;
-    border-radius: 10px;
-}
-input.param {
-    width: 50px;
-    margin-right: 10px;
-}
-</style>
+<script src="/media/index.js"></script>
+<link rel="stylesheet" type="text/css" href="/media/index.css">
 </head>
 <body>
 <h1>QuantumMechanic</h1>
 
-CONSTRUCTION TARGET(?)
-<hr>
-<h2>Circuit-in-Progress</h2>
-<div id="canvas">
+<p>
+
+Read more about each of the supported gates: <a href="http://nbviewer.ipython.org/github/qutip/qutip-notebooks/blob/master/examples/example-quantum-gates.ipynb">QuTIP documentation</a>.
+</p>
+
+<!--CONSTRUCTION TARGET(?) <hr> <h2>Circuit-in-Progress</h2>-->
+
+<p><input type="submit" value="Delete final gate" id="undo"></p>
+<div id="canvas" data-state='{{circuit_init_data|safe}}'>
 {{circuit_init_png|safe}}
 </div>
-<hr>
-Qubit 1: <input type="text" name="qubit1" class="param">
-Qubit 2: <input type="text" name="qubit2" class="param">
-Theta: <input type="text" name="theta" class="param">
 
 <hr>
+<i>To add a gate to the circuit, click on it below after configuring these settings.</i>
+<br>
+First qubit: <select name="qubit1" id="qubit1" class="param">
+  {% for number in qubit_numbers %}
+  <option value="{{number}}">{{number}}</option>
+  {% endfor %}
+</select>
+Second qubit: <select name="qubit2" id="qubit2" class="param">
+  {% for number in qubit_numbers %}
+  <option value="{{number}}">{{number}}</option>
+  {% endfor %}
+</select>
+Third qubit: <select name="qubit3" id="qubit3" class="param">
+  {% for number in qubit_numbers %}
+  <option value="{{number}}">{{number}}</option>
+  {% endfor %}
+</select>
+<span class="tab">
+Theta: <input type="text" name="theta" id="theta" class="param"> degrees
+<span class="tab">
+Insert after: gate #<input type="text" name="nth" id="nth" class="param">
 
 <div id="gates">
-    {% for gate_png in gate_pngs %}
-        <div class="gate draggable">
-        {{gate_png|safe}}
+    {% for gate in gates %}
+        <div class="gate draggable" data-name="{{gate.1}}">
+        {{gate.0|safe}}
         </div>
     {% endfor %}
 </div>
 
-<hr>
-<input type="submit" value="Delete last gate">
+<h2>Matrix representation:</h2>
+<div id="matrix">
+{{matrix|safe}}
+</div>
 
 </body>
 </html>
