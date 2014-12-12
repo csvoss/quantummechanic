@@ -53,7 +53,7 @@ input.param {
     width: 50px;
     margin-right: 10px;
 }
-div#matrix td {
+div#matrix td, div#matrix_target td {
     padding: 5px;
     padding-left: 15px;
     text-align: center;
