@@ -341,6 +341,7 @@ def restore_state(state):
     n = state["nQubits"]
     qc = QubitCircuit(n)
     for gateTuple in state["gateTuples"]:
+        print gateTuple
         extract_gate(n, *gateTuple)(qc)
     return qc
 

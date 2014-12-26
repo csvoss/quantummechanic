@@ -19,7 +19,11 @@ $(function() {
 	    var qubit1 = $("select#qubit1 option:selected").text();
 	    var qubit2 = $("select#qubit2 option:selected").text();
 	    var qubit3 = $("select#qubit3 option:selected").text();
-	    var theta = $("input#theta").val();
+	    if ($("input#theta").val()) {
+		var theta = $("input#theta").val();
+	    } else {
+		var theta = 0;
+	    }
 	    var nth = $("input#nth").val();
 	    $.ajax("/addgate/", {
 		data: {

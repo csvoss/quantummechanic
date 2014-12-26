@@ -41,6 +41,7 @@ div#canvas {
     padding-left: 0px;
     overflow: scroll;
     overflow-y: hidden;
+    overflow-x: hidden;
     max-width: 1200px;
 }
 td#canvas_td {
