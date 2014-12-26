@@ -109,7 +109,7 @@ def get_gate_pngs():
 def toffoli_png():
     gate = "TOFFOLI"
     qc = QubitCircuit(3)
-    qc.add_gate(gate, 0, [1, 2])
+    extract_gate(3, gate, 0, 1, 2, 0)(qc)
     data = image_data(qc)
     return (data, gate)
 
@@ -316,7 +316,7 @@ def extract_gate(numqubits, gate, qubit1, qubit2, qubit3, theta):
                 raise StandardError("Qubits 1, 2, and 3 must be different")
         elif gate in TOFFOLI_GATE:
             if qubit1 != qubit2 and qubit2 != qubit3 and qubit1 != qubit3:
-                qc.add_gate(gate, qubit3, [qubit1, qubit2])
+                qc.add_gate(gate, targets=[qubit3], controls=[qubit1, qubit2])
             else:
                 raise StandardError("Qubits 1, 2, and 3 must be different")
         else:
