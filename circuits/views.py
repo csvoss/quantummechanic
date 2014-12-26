@@ -91,20 +91,10 @@ def get_gate_pngs():
         else:
             raise StandardError()
         qc = QubitCircuit(numqubits)
-        if gate in SINGLE_QUBIT_GATES:
-            qc.add_gate(gate, 0)
-        elif gate in DOUBLE_QUBIT_GATES:
-            qc.add_gate(gate, [0, 1])
-        elif gate in ONE_CONTROL_ONE_GATE:
-            qc.add_gate(gate, 0, 1)
-        elif gate in SINGLE_QUBIT_THETA_GATES:
-            qc.add_gate(gate, 0, None, 0, "\\theta")
-        elif gate in DOUBLE_QUBIT_THETA_GATES:
-            qc.add_gate(gate, [1, 0], None, 0, "\\theta")
-        elif gate in TWO_CONTROLS_ONE_GATE:
-            qc.add_gate(gate, 2, [1, 0])
-        elif gate in ONE_CONTROL_TWO_GATES:
-            qc.add_gate(gate, [1, 2], 0)
+
+        extract_gate(numqubits, gate, 0, 1, 2, "\\theta")(qc)
+        ## Create a function which applies the specified gate to a QC
+
         try:
             with open("images/" + gate + ".png", "r") as cached:
                 output.append((cached.read(), gate))
@@ -119,7 +109,7 @@ def get_gate_pngs():
 def toffoli_png():
     gate = "TOFFOLI"
     qc = QubitCircuit(3)
-    qc.add_gate(gate, 2, [1, 0])
+    qc.add_gate(gate, 0, [1, 2])
     data = image_data(qc)
     return (data, gate)
 
@@ -265,6 +255,8 @@ TWO_CONTROLS_ONE_GATE = ["TOFFOLI"]
 ONE_CONTROL_TWO_GATES = ["FREDKIN"]
 
 def parse_theta(theta):
+    if theta == "\\theta":
+        return 0
     if theta == "":
         theta = 0
     try:
@@ -274,6 +266,8 @@ def parse_theta(theta):
     return theta
 
 def string_theta(theta):
+    if theta == "\\theta":
+        return "\\theta"
     if theta == "":
         theta = 0
     try:
@@ -286,11 +280,11 @@ def string_theta(theta):
         raise StandardError("Invalid theta -- must be a number (in degrees)")
     return theta
 
-def extract_gate(n, gate, qubit1, qubit2, qubit3, theta):
+def extract_gate(numqubits, gate, qubit1, qubit2, qubit3, theta):
     ## Create a function which applies the specified gate to a QC
-    qubit1 = n - int(qubit1) - 1
-    qubit2 = n - int(qubit2) - 1
-    qubit3 = n - int(qubit3) - 1
+    qubit1 = numqubits - int(qubit1) - 1
+    qubit2 = numqubits - int(qubit2) - 1
+    qubit3 = numqubits - int(qubit3) - 1
 
     def retval(qc):
         if gate in SINGLE_QUBIT_GATES:
@@ -312,22 +306,17 @@ def extract_gate(n, gate, qubit1, qubit2, qubit3, theta):
                 qc.add_gate(gate, [qubit1, qubit2], None, parse_theta(theta), string_theta(theta))
             else:
                 raise StandardError("Qubit 1 and 2 must be different")
-        elif gate in TWO_CONTROLS_ONE_GATE:
-            if qubit1 != qubit2 and qubit2 != qubit3 and qubit1 != qubit3:
-                qc.add_gate(gate, qubit1, [qubit2, qubit3])
-            else:
-                raise StandardError("Qubits 1, 2, and 3 must be different")
         elif gate in ONE_CONTROL_TWO_GATES:
             if qubit1 != qubit2 and qubit2 != qubit3 and qubit1 != qubit3:
                 if abs(qubit1 - qubit3) > abs(qubit2 - qubit3):
-                    qc.add_gate(gate, [qubit2, qubit1], qubit3)
+                    qc.add_gate(gate, [qubit2, qubit3], qubit1)
                 else:
-                    qc.add_gate(gate, [qubit1, qubit2], qubit3)                    
+                    qc.add_gate(gate, [qubit3, qubit2], qubit1)                    
             else:
                 raise StandardError("Qubits 1, 2, and 3 must be different")
         elif gate in TWO_CONTROLS_ONE_GATE:
             if qubit1 != qubit2 and qubit2 != qubit3 and qubit1 != qubit3:
-                qc.add_gate(gate, qubit1, [qubit2, qubit3])
+                qc.add_gate(gate, qubit3, [qubit1, qubit2])
             else:
                 raise StandardError("Qubits 1, 2, and 3 must be different")
         else:
@@ -341,7 +330,6 @@ def restore_state(state):
     n = state["nQubits"]
     qc = QubitCircuit(n)
     for gateTuple in state["gateTuples"]:
-        print gateTuple
         extract_gate(n, *gateTuple)(qc)
     return qc
 
