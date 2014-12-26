@@ -11,7 +11,7 @@ import cPickle
 from qutip import *
 from IPython.display import Image
 
-MAX_QUBITS = 10
+MAX_QUBITS = 8
 MIN_QUBITS = 2
 DEFAULT_QUBITS = 4
 
