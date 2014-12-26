@@ -251,8 +251,8 @@ DOUBLE_QUBIT_GATES = ["SWAP", "BERKELEY", "ISWAP", "SQRTISWAP"]
 ONE_CONTROL_ONE_GATE = ["CNOT", "CSIGN"]
 SINGLE_QUBIT_THETA_GATES = ["RX", "RY", "RZ", "PHASEGATE", "GLOBALPHASE"]
 DOUBLE_QUBIT_THETA_GATES = ["SWAPalpha"]
-TWO_CONTROLS_ONE_GATE = ["TOFFOLI"]
-ONE_CONTROL_TWO_GATES = ["FREDKIN"]
+TOFFOLI_GATE = ["TOFFOLI"]
+FREDKIN_GATE = ["FREDKIN"]
 
 def parse_theta(theta):
     if theta == "\\theta":
@@ -306,7 +306,7 @@ def extract_gate(numqubits, gate, qubit1, qubit2, qubit3, theta):
                 qc.add_gate(gate, [qubit1, qubit2], None, parse_theta(theta), string_theta(theta))
             else:
                 raise StandardError("Qubit 1 and 2 must be different")
-        elif gate in ONE_CONTROL_TWO_GATES:
+        elif gate in FREDKIN_GATE:
             if qubit1 != qubit2 and qubit2 != qubit3 and qubit1 != qubit3:
                 if abs(qubit1 - qubit3) > abs(qubit2 - qubit3):
                     qc.add_gate(gate, [qubit2, qubit3], qubit1)
@@ -314,7 +314,7 @@ def extract_gate(numqubits, gate, qubit1, qubit2, qubit3, theta):
                     qc.add_gate(gate, [qubit3, qubit2], qubit1)                    
             else:
                 raise StandardError("Qubits 1, 2, and 3 must be different")
-        elif gate in TWO_CONTROLS_ONE_GATE:
+        elif gate in TOFFOLI_GATE:
             if qubit1 != qubit2 and qubit2 != qubit3 and qubit1 != qubit3:
                 qc.add_gate(gate, qubit3, [qubit1, qubit2])
             else:

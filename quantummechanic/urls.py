@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 import settings
 import circuits.views
+import os
 
 urlpatterns = patterns('',
     # Examples:
@@ -17,4 +18,10 @@ urlpatterns = patterns('',
     url(r'^addgate/', circuits.views.addgate, name='addgate'),
     url(r'^undo/', circuits.views.undo, name='undo'),
     url(r'^clear/', circuits.views.clear, name='clear'),
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)
+
+if settings.DEBUG404:
+    urlpatterns += patterns('',
+                            (r'^media/(?P<path>.*)$', 'django.views.static.serve', 
+                             {'document_root': os.path.join(os.path.dirname(__file__),'media')})
+    )
